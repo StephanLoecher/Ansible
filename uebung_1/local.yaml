@@ -1,0 +1,79 @@
+- name: "Playing with Ansible"
+  # Only Localhost
+  hosts: localhost
+  connection: local
+
+  # Remote hosts via hosts.yaml
+  # hosts: all
+  # #connection: local
+
+  gather_facts: yes
+
+# This variable will be available in the playbook
+  vars:
+    domain: "jenkins-education-skyered.westus2.cloudapp.azure.com"
+
+# This variables will be include from a file
+  vars_files:
+    - "./variables.yaml"
+
+  tasks:
+  - name: "just execute a ls -lrt command"
+    shell: "ls -lrt"
+    register: "output"
+
+  - name: "Get my ips"
+    shell: "ifconfig | grep 'inet ' | awk '{print $2}'"
+    register: "my_ips"
+  - debug:
+      var: my_ips.stdout_lines
+
+  - debug: var=output.stdout_lines
+  - debug: var=ansible_all_ipv4_addresses
+
+# This is the hostname of the machine where the playbook is executed
+  - name: "Print my Hostname"
+    debug:
+      msg: "My hostname is {{ ansible_hostname }}"
+
+# This is the inventory hostname, which may differ from ansible_hostname
+  - name: "Print my Inventory Hostname"
+    debug:
+      msg: "My hostname is {{ inventory_hostname }}"
+
+  - name: "print my OS"
+    debug:
+      msg: "My OS is {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+  - name: "write a file with my hostname and IPs"
+    copy:
+      content: |
+        My hostname is {{ ansible_hostname }}
+        My inventory hostname is {{ inventory_hostname }}
+        My IPs are {{ ansible_all_ipv4_addresses | join(', ') }}
+        Das is super
+        gut
+      dest: /tmp/my_host_{{ inventory_hostname }}_info.txt
+      mode: '0644'
+
+# This task uses a template file to create a configuration file
+  - name: "write a config file with the domain"
+    template:
+      src: ./nginx.conf.tpl
+      dest: /tmp/nginx-{{ inventory_hostname }}.conf
+      mode: '0644'
+      backup: yes
+  
+  - name: "Print my magic_number from variables file"
+    debug:
+      msg: "My magic_number is {{ magic_number }}"
+
+  - name: Echo the value of packages in a loop
+    command: echo "{{ item }}"
+    loop: "{{ packages }}"
+
+  - name: Iterate through secrets over dictionary
+    debug:
+      msg:
+      - "The {{ item.key }} is: {{ item.value }}"
+    loop: "{{ secrets | dict2items }}"

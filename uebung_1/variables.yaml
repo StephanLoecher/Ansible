@@ -1,0 +1,11 @@
+---
+magic_number: 42
+pi: 3.14159
+secrets:
+  username: admin
+  password: master-password
+
+packages:
+  - eins
+  - zwei
+  - drei

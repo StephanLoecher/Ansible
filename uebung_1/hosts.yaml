@@ -1,0 +1,32 @@
+# Example Ansible inventory file in YAML format
+# This file defines the hosts and groups for Ansible playbooks.
+# Normally the ips are not the same, but for this example we use the same IP for all hosts.
+all:
+  hosts:
+    router:
+      ansible_host: 192.168.100.5
+      ansible_user: paul
+      ansible_port: 22
+    master01:
+      ansible_host: 192.168.100.5
+      ansible_user: paul
+      ansible_port: 22
+    worker01:
+      ansible_host: 192.168.100.5
+      ansible_user: paul
+      ansible_port: 22
+    test01:
+      ansible_host: 192.168.100.5
+      ansible_port: 22
+      ansible_user: paul
+  children:
+    linux:
+      hosts:
+      children:
+        debian:
+          hosts:
+            master01:
+            worker01:
+        ubuntu:
+          hosts:
+            test01:
