@@ -1,0 +1,3 @@
+---
+hostvar_test: "test_value_worker01"
+initial_setup: true

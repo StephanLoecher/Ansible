@@ -1,0 +1,3 @@
+---
+hostvar_test: "test_value_master01"
+initial_setup: true

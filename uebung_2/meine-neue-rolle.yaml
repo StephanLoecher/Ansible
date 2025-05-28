@@ -1,0 +1,7 @@
+---
+- hosts:
+  - linux
+  become: yes
+  become_method: sudo
+  roles:
+    - meine-neue-rolle

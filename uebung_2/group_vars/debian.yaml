@@ -1,0 +1,14 @@
+---
+packages:
+  - net-tools
+  - tree
+  - wget
+  - jq
+  - nano
+  - curl
+  - htop
+  - ufw
+  - apt-listchanges
+  - unzip
+  - sudo
+  - tar

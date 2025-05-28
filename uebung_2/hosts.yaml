@@ -1,0 +1,25 @@
+all:
+  hosts:
+    master01:
+      ansible_host: x.x.x.x
+      ansible_user: paul
+      ansible_port: 22
+    worker01:
+      ansible_host: x.x.x.x
+      ansible_user: paul
+      ansible_port: 2222
+    test1:
+      ansible_host: x.x.x.x
+      ansible_port: 22
+      ansible_user: operator
+  children:
+    linux:
+      hosts:
+      children:
+        debian:
+          hosts:
+            master01:
+            worker01:
+        ubuntu:
+          hosts:
+            test1:

@@ -1,0 +1,28 @@
+---
+- name: Update system
+  include_tasks: update.yaml
+  when: ansible_distribution in ['Ubuntu', 'Debian']
+  tags:
+  - update
+
+- name: Install appropriate packages
+  include_tasks: packages.yaml
+  when: ansible_distribution in ['Ubuntu', 'Debian']
+  tags:
+  - packages
+
+- name: add authorized keys and users
+  include_tasks: ssh_keys.yaml
+  when: ansible_distribution in ['Ubuntu', 'Debian'] and initial_setup
+  tags:
+  - ssh_keys
+
+- name: move SSH Port
+  include_tasks: sshd.yaml
+  when: initial_setup
+  tags:
+  - sshd
+
+- name: "update hostname"
+  hostname:
+    name: "{{ inventory_hostname }}"

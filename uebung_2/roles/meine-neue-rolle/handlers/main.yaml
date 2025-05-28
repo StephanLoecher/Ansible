@@ -1,0 +1,10 @@
+---
+
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: ansible_distribution in ['Ubuntu', 'Debian']
