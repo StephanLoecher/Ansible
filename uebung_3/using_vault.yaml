@@ -1,0 +1,26 @@
+- name: "Playing with Ansible Vault"
+  hosts: localhost
+  connection: local
+
+  gather_facts: yes
+
+# This variable will be available in the playbook
+  vars:
+    inline_password: xyz
+
+# This variables will be include from a file
+  vars_files:
+    - "./vault.yaml"
+
+  tasks:
+  - name: "just print the inline_password"
+    debug:
+      msg: "My inline_password is {{ inline_password }}"
+
+  - name: "Print the backend user from the encrypted vault"
+    debug:
+      msg: "user: {{ credentials.backend.username }}"
+
+  - name: "Print the backend user from the encrypted vault"
+    debug:
+      msg: "password: {{ credentials.backend.password }}"
